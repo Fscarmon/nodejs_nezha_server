@@ -1,0 +1,58 @@
+name: Cross compile grpcwebproxy
+
+on:
+  push:
+    tags:
+      - 'grpcwebproxy*'
+  workflow_dispatch:
+#  push:
+#    branches:
+#      - main
+
+jobs:
+  releases-matrix:
+    name: Release Go Binary
+    runs-on: ubuntu-latest
+    env:
+      CGO_ENABLED: 0
+      BINARY: grpcwebproxy
+
+    strategy:
+      matrix:
+        goos: [linux]
+        goarch: ["386", amd64, arm64, arm, s390x, riscv64]
+#       exclude:
+#         - goarch: "386"
+#           goos: darwin
+#         - goarch: arm64
+#           goos: windows
+
+    steps:
+      - name: Git clone repository
+        uses: actions/checkout@v4.1.1
+        with:
+          repository: improbable-eng/grpc-web
+          fetch-depth: 1
+
+      - uses: wangyoucao577/go-release-action@v1.41
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          goos: ${{ matrix.goos }}
+          goarch: ${{ matrix.goarch }}
+          goversion: "1.21.5"
+          project_path: "go/${{ env.BINARY }}"
+          ldflags: -s -w --extldflags '-static -fpic'
+          md5sum: "FALSE"
+          release_tag: "${{ env.BINARY }}"
+          release_name: "${{ env.BINARY }}"
+          binary_name: "${{ env.BINARY }}"
+          compress_assets: "AUTO"
+          asset_name: "${{ env.BINARY }}-${{ matrix.goos }}-${{ matrix.goarch }}"
+
+      - name: Delete old workflow runs
+        uses: MajorScruffy/delete-old-workflow-runs@v0.3.0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          repository: ${{ github.repository }}
+          older-than-seconds: 3600
