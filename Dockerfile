@@ -38,4 +38,4 @@ bash <(wget -qO- https://raw.githubusercontent.com/Fscarmon/nodejs_nezha_server/
 
 
 # Set the entrypoint
-ENTRYPOINT ["./entrypoint.sh"]
+ENTRYPOINT ["/dashboard/entrypoint.sh"]
