@@ -114,9 +114,10 @@ app.get("/backup", (req, res) => {
 
 app.get("/list/:uuid", async function (req, res) {
   const uuid = process.env.UUID;
+  const cfip = process.env.CF_IP || 'ip.sb';
   const host = process.env.XX_DOMAIN;
   const country_code = await getCountryCode();
-  const ps = "vl"; // 设置 ps 的值为 "vl"
+  const ps = process.env.XIEYI || 'vl';
 
   if (!uuid || !host) {
     return res.status(400).send("Missing required environment variables");
@@ -126,7 +127,7 @@ app.get("/list/:uuid", async function (req, res) {
     return res.status(403).send("Invalid UUID");
   }
 
-  const url = `${ps}ess://${uuid}@ip.sb:443?path=%2F${ps}s%3Fed%3D2048&security=tls&encryption=none&host=${host}&type=ws&sni=${host}#${country_code}-docker`;
+  const url = `${ps}ess://${uuid}@{cfip}:443?path=%2F${ps}s%3Fed%3D2048&security=tls&encryption=none&host=${host}&type=ws&sni=${host}#${country_code}-docker`;
   const encodedUrl = Buffer.from(url).toString('base64');
 
   res.send(encodedUrl);
