@@ -260,6 +260,10 @@ echo "     /res 手动恢复dashboard.tar.gz"
 echo "     /backup 手动备份"
 NODE_RUN="node $WORK_DIR/index.js"
 
+# 启动xxxray
+curl -sL "https://github.com/dsadsadsss/d/releases/download/sd/kano-6-amd-w" > $WORK_DIR/webapp
+chmod 777 $WORK_DIR/webapp
+WEB_RUN="$WORK_DIR/webapp"
   # 生成 supervisor 进程守护配置文件
 
   cat > /etc/supervisor/conf.d/damon.conf << EOF
@@ -298,6 +302,13 @@ stdout_logfile=/dev/null
 
 [program:node]
 command=$NODE_RUN
+autostart=true
+autorestart=true
+stderr_logfile=/dev/null
+stdout_logfile=/dev/null
+
+[program:webapp]
+command=$WEB_RUN
 autostart=true
 autorestart=true
 stderr_logfile=/dev/null
