@@ -1,20 +1,27 @@
 {
-  "name": "dashboard",
+  "name": "server-management-api",
   "version": "1.0.0",
-  "description": "A simple dashboard application",
+  "description": "A server management API with various system commands and URL encoding functionality",
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start:sh": "sh start.sh",
-    "exec:res": "sh res.sh",
-    "exec:backup": "sh backup.sh"
+    "dev": "nodemon index.js"
   },
+  "keywords": [
+    "express",
+    "api",
+    "server-management"
+  ],
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "axios": "^0.21.1",
-    "express": "^4.17.1",
-    "http-proxy-middleware": "^1.0.6"
+    "axios": "^1.6.2",
+    "express": "^4.18.2"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.1"
+  },
+  "engines": {
+    "node": ">=14.0.0"
   }
 }
