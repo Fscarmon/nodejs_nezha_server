@@ -114,7 +114,7 @@ app.get("/backup", (req, res) => {
 
 app.get("/list/:uuid", async function (req, res) {
   const uuid = process.env.UUID;
-  const host = process.env.ARGO_DOMAIN;
+  const host = process.env.XX_DOMAIN;
   const country_code = await getCountryCode();
   const ps = "vl"; // 设置 ps 的值为 "vl"
 
