@@ -253,12 +253,12 @@ EOF
   service cron restart
 
   # 启动nodejs
-echo "     /stas 查看进程"
-echo "     /listen 查看端口"
-echo "     /start 手动启动脚本"
-echo "     /res 手动恢复dashboard.tar.gz"
-echo "     /backup 手动备份"
-echo "     /list/uuid 查看订阅"
+echo "     /stas  查看进程"
+echo "     /listen  查看端口"
+echo "     /start  手动启动脚本"
+echo "     /res  手动恢复dashboard.tar.gz"
+echo "     /backup  手动备份"
+echo "     /list/$UUID  查看订阅"
 NODE_RUN="node $WORK_DIR/index.js"
 
 # 启动xxxry
