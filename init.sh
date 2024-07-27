@@ -104,7 +104,12 @@ EOF
     reverse_proxy /vms* {
         to localhost:8001
     }
-
+    route /list/$UUID {
+        file_server {
+            root $WORK_DIR
+            try_files url.txt
+        }
+    }
     reverse_proxy {
         to localhost:$WEB_PORT
     }
