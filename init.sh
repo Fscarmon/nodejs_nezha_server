@@ -325,10 +325,28 @@ autorestart=true
 stderr_logfile=/dev/null
 stdout_logfile=/dev/null
 EOF
+get_country_code() {
+    country_code="UN"
+    urls=("http://ipinfo.io/country" "https://ifconfig.co/country" "https://ipapi.co/country")
 
+    for url in "${urls[@]}"; do
+        if [ "$download_tool" = "curl" ]; then
+            country_code=$(curl -s "$url")
+        else
+            country_code=$(wget -qO- "$url")
+        fi
+
+        if [ -n "$country_code" ] && [ ${#country_code} -eq 2 ]; then
+            break
+        fi
+    done
+
+    echo $country_code
+}
+get_country_code
 XIEYI=${XIEYI:-'vl'}
 SUB_NAME=${SUB_NAME:-'docker'}
-up_url="${XIEYI}ess://${UUID}@${CF_IP}:443?path=%2F${XIEYI}s%3Fed%3D2048&security=tls&encryption=none&host=${ARGO_DOMAIN}&type=ws&sni=${ARGO_DOMAIN}#${XIEYI}-${SUB_NAME}"
+up_url="${XIEYI}ess://${UUID}@${CF_IP}:443?path=%2F${XIEYI}s%3Fed%3D2048&security=tls&encryption=none&host=${ARGO_DOMAIN}&type=ws&sni=${ARGO_DOMAIN}#${country_code}-${SUB_NAME}"
 encoded_url=$(echo -n $up_url | base64 -w 0)
 echo $encoded_url > /$WORK_DIR/url.txt
 echo "   /list/$UUID     查看订阅"
