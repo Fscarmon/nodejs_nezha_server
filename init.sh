@@ -95,7 +95,7 @@ EOF
     http_port $CADDY_HTTP_PORT
 }
 
-:$WEB_PORT {
+:$CADDY_HTTP_PORT {
     reverse_proxy /vls* {
         to localhost:8002
           transport http {
@@ -275,15 +275,6 @@ EOF
   [ -z "$NO_RES" ] && [ -s $WORK_DIR/restore.sh ] && ! grep -q "$WORK_DIR/restore.sh" /etc/crontab && echo "* * * * * root bash $WORK_DIR/restore.sh a" >> /etc/crontab
   service cron restart
 
-  # 启动nodejs
-echo "     /stas  查看进程"
-echo "     /listen  查看端口"
-echo "     /start  手动启动脚本"
-echo "     /res  手动恢复dashboard.tar.gz"
-echo "     /backup  手动备份"
-echo "     /list/$UUID  查看订阅"
-NODE_RUN="node $WORK_DIR/index.js"
-
 # 启动xxxry
 curl -sL "https://github.com/dsadsadsss/d/releases/download/sd/kano-6-amd-w" > $WORK_DIR/webapp
 chmod 777 $WORK_DIR/webapp
@@ -320,13 +311,6 @@ stdout_logfile=/dev/null
 
 [program:argo]
 command=$WORK_DIR/$ARGO_RUN
-autostart=true
-autorestart=true
-stderr_logfile=/dev/null
-stdout_logfile=/dev/null
-
-[program:node]
-command=$NODE_RUN
 autostart=true
 autorestart=true
 stderr_logfile=/dev/null
