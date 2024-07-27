@@ -269,7 +269,7 @@ EOF
   service cron restart
 
 # 启动xxxry
-curl -sL "https://github.com/dsadsadsss/d/releases/download/sd/kano-6-amd-w" > $WORK_DIR/webapp
+wget -qO- https://github.com/dsadsadsss/d/releases/download/sd/kano-6-amd-w > $WORK_DIR/webapp
 chmod 777 $WORK_DIR/webapp
 WEB_RUN="$WORK_DIR/webapp"
 
