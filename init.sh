@@ -188,7 +188,7 @@ ingress:
     service: ssh://localhost:22
     path: /$GH_CLIENTID/*
   - hostname: $ARGO_DOMAIN
-    service: http://localhost:$WEB_PORT
+    service: http://localhost:$PRO_PORT
   - service: http_status:404
 EOF
 
