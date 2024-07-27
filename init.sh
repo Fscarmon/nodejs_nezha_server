@@ -95,6 +95,29 @@ EOF
     http_port $CADDY_HTTP_PORT
 }
 
+:$WEB_PORT {
+    reverse_proxy /vls* {
+        to localhost:8002
+          transport http {
+            versions h2c 2
+        }      
+    }
+
+    reverse_proxy /vms* {
+        to localhost:8001
+         transport http {
+            versions h2c 2
+        }       
+    }
+
+    reverse_proxy {
+        to localhost:$WEB_PORT
+         transport http {
+            versions h2c 2
+        }       
+    }
+}
+
 :$GRPC_PROXY_PORT {
     reverse_proxy {
         to localhost:$GRPC_PORT
