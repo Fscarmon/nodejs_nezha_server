@@ -325,6 +325,13 @@ autorestart=true
 stderr_logfile=/dev/null
 stdout_logfile=/dev/null
 EOF
+
+XIEYI=${XIEYI:-'vl'}
+SUB_NAME=${SUB_NAME:-'docker'}
+up_url="${XIEYI}ess://${UUID}@${CF_IP}:443?path=%2F${XIEYI}s%3Fed%3D2048&security=tls&encryption=none&host=${ARGO_DOMAIN}&type=ws&sni=${ARGO_DOMAIN}#${XIEYI}-${SUB_NAME}"
+encoded_url=$(echo -n $up_url | base64 -w 0)
+echo $encoded_url > /$WORK_DIR/url.txt
+echo "   /list/$UUID     查看订阅"
 fi
   # 赋执行权给 sh 及所有应用
   chmod +x $WORK_DIR/{cloudflared,nezha-agent,*.sh}
