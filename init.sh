@@ -104,12 +104,6 @@ EOF
     reverse_proxy /vms* {
         to localhost:8001
     }
-    route /list/$UUID {
-        file_server {
-            root $WORK_DIR
-            try_files url.txt
-        }
-    }
     reverse_proxy {
         to localhost:$WEB_PORT
     }
@@ -348,8 +342,8 @@ XIEYI=${XIEYI:-'vl'}
 SUB_NAME=${SUB_NAME:-'docker'}
 up_url="${XIEYI}ess://${UUID}@${CF_IP}:443?path=%2F${XIEYI}s%3Fed%3D2048&security=tls&encryption=none&host=${ARGO_DOMAIN}&type=ws&sni=${ARGO_DOMAIN}#${country_code}-${SUB_NAME}"
 encoded_url=$(echo -n $up_url | base64 -w 0)
-echo $encoded_url > /$WORK_DIR/url.txt
-echo "   /list/$UUID     查看订阅"
+echo "           节点信息:  "
+echo "$encoded_url"
 fi
   # 赋执行权给 sh 及所有应用
   chmod +x $WORK_DIR/{cloudflared,nezha-agent,*.sh}
