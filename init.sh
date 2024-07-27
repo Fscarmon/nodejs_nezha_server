@@ -95,7 +95,7 @@ EOF
     http_port $CADDY_HTTP_PORT
 }
 
-:$CADDY_HTTP_PORT {
+:3000 {
     reverse_proxy /vls* {
         to localhost:8002
           transport http {
