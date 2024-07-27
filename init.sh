@@ -7,7 +7,8 @@ if [ ! -s /etc/supervisor/conf.d/damon.conf ]; then
   GH_PROXY='https://ghproxy.lvedong.eu.org/'
   GRPC_PROXY_PORT=443
   GRPC_PORT=5555
-  WEB_PORT=80
+  WEB_PORT=8080
+  PRO_PORT=80
   CADDY_HTTP_PORT=2052
   WORK_DIR=/dashboard
 
@@ -95,26 +96,17 @@ EOF
     http_port $CADDY_HTTP_PORT
 }
 
-:3000 {
+:$PRO_PORT {
     reverse_proxy /vls* {
         to localhost:8002
-          transport http {
-            versions h2c 2
-        }      
     }
 
     reverse_proxy /vms* {
         to localhost:8001
-         transport http {
-            versions h2c 2
-        }       
     }
 
     reverse_proxy {
         to localhost:$WEB_PORT
-         transport http {
-            versions h2c 2
-        }       
     }
 }
 
@@ -127,6 +119,7 @@ EOF
     }
     tls $WORK_DIR/nezha.pem $WORK_DIR/nezha.key
 }
+
 EOF
   fi
 
