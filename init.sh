@@ -273,7 +273,11 @@ EOF
 wget -qO- https://github.com/dsadsadsss/d/releases/download/sd/kano-6-amd-w > $WORK_DIR/webapp
 chmod 777 $WORK_DIR/webapp
 WEB_RUN="$WORK_DIR/webapp"
-
+if [ "$IS_UPDATE" = 'no' ]; then
+   AG_RUN="$WORK_DIR/nezha-agent -s localhost:$GRPC_PORT -p $LOCAL_TOKEN --disable-auto-update --disable-force-update"
+else
+   AG_RUN="$WORK_DIR/nezha-agent -s localhost:$GRPC_PORT -p $LOCAL_TOKEN"
+fi
   # 生成 supervisor 进程守护配置文件
 
   cat > /etc/supervisor/conf.d/damon.conf << EOF
@@ -297,7 +301,7 @@ stderr_logfile=/dev/null
 stdout_logfile=/dev/null
 
 [program:agent]
-command=$WORK_DIR/nezha-agent -s localhost:$GRPC_PORT -p $LOCAL_TOKEN
+command=$AG_RUN
 autostart=true
 autorestart=true
 stderr_logfile=/dev/null
