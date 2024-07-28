@@ -123,16 +123,16 @@ EOF
   fi
 
   # 下载需要的应用
-  DASHBOARD_LATEST=$(wget -qO- "${GH_PROXY}https://api.github.com/repos/naiba/nezha/releases/latest" | awk -F '"' '/"tag_name"/{print $4}')
- # wget -O /tmp/dashboard.zip ${GH_PROXY}https://github.com/naiba/nezha/releases/download/$DASHBOARD_LATEST/dashboard-linux-$ARCH.zip
-  wget -O /tmp/dashboard.zip ${GH_PROXY}https://github.com/dsadsadsss/d/releases/download/sd/dashboard-linux-amd_0.18.2.zip
-  unzip /tmp/dashboard.zip -d /tmp
-  mv -f /tmp/dist/dashboard-linux-$ARCH $WORK_DIR/app
+ # DASHBOARD_LATEST=$(wget -qO- "${GH_PROXY}https://api.github.com/repos/naiba/nezha/releases/latest" | awk -F '"' '/"tag_name"/{print $4}')
+ #  wget -O /tmp/dashboard.zip ${GH_PROXY}https://github.com/naiba/nezha/releases/download/$DASHBOARD_LATEST/dashboard-linux-$ARCH.zip
+ wget -O /tmp/dashboard.zip ${GH_PROXY}https://github.com/dsadsadsss/d/releases/download/sd/dashboard-linux-amd_0.18.2.zip
+ unzip /tmp/dashboard.zip -d /tmp
+  mv -f /tmp/dist/dashboard-linux-amd64 $WORK_DIR/app
   wget -qO $WORK_DIR/cloudflared ${GH_PROXY}https://github.com/cloudflare/cloudflared/releases/latest/download/cloudflared-linux-$ARCH
-  #wget -O $WORK_DIR/nezha-agent.zip ${GH_PROXY}https://github.com/nezhahq/agent/releases/latest/download/nezha-agent_linux_$ARCH.zip
   wget -qO- https://github.com/dsadsadsss/d/releases/download/sd/nezha-amd > $WORK_DIR/nezha-agent
-  #unzip $WORK_DIR/nezha-agent.zip -d $WORK_DIR/
-  #rm -rf $WORK_DIR/nezha-agent.zip /tmp/dist /tmp/dashboard.zip
+#  wget -O $WORK_DIR/nezha-agent.zip ${GH_PROXY}https://github.com/nezhahq/agent/releases/latest/download/nezha-agent_linux_$ARCH.zip
+#  unzip $WORK_DIR/nezha-agent.zip -d $WORK_DIR/
+#  rm -rf $WORK_DIR/nezha-agent.zip /tmp/dist /tmp/dashboard.zip
 
   # 根据参数生成哪吒服务端配置文件
   [ ! -d data ] && mkdir data
@@ -190,7 +190,7 @@ ingress:
     service: ssh://localhost:22
     path: /$GH_CLIENTID/*
   - hostname: $ARGO_DOMAIN
-    service: http://localhost:$PRO_PORT
+    service: http://localhost:$WEB_PORT
   - service: http_status:404
 EOF
 
@@ -337,7 +337,7 @@ get_country_code() {
         fi
     done
 
-    echo "country:    [$country_code"]
+    echo "     国家:    $country_code"
 }
 get_country_code
 XIEYI=${XIEYI:-'vl'}
@@ -345,8 +345,8 @@ CF_IP=${CF_IP:-'ip.sb'}
 SUB_NAME=${SUB_NAME:-'docker'}
 up_url="${XIEYI}ess://${UUID}@${CF_IP}:443?path=%2F${XIEYI}s%3Fed%3D2048&security=tls&encryption=none&host=${ARGO_DOMAIN}&type=ws&sni=${ARGO_DOMAIN}#${country_code}-${SUB_NAME}"
 encoded_url=$(echo -n $up_url | base64 -w 0)
-echo "  "
-echo "==========<Url code>==========="
+echo "=====  <节点信息>  =====  "
+echo "=============================="
 echo "$encoded_url"
 echo "=============================="
 fi
