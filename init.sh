@@ -11,7 +11,7 @@ if [ ! -s /etc/supervisor/conf.d/damon.conf ]; then
   PRO_PORT=80
   CADDY_HTTP_PORT=2052
   WORK_DIR=/dashboard
-
+   IS_UPDATE=${IS_UPDATE:-'yes'}
   # 如不分离备份的 github 账户，默认与哪吒登陆的 github 账户一致
   GH_BACKUP_USER=${GH_BACKUP_USER:-$GH_USER}
 
