@@ -240,7 +240,7 @@ EOF
 #!/usr/bin/env bash
 
 # restore.sh 传参 a 自动还原 README.md 记录的文件，当本地与远程记录文件一样时不还原； 传参 f 不管本地记录文件，强制还原成备份库里 README.md 记录的文件； 传参 dashboard-***.tar.gz 还原成备份库里的该文件；不带参数则要求选择备份库里的文件名
-
+LOCAL_TOKEN=$LOCAL_TOKEN
 GH_PROXY=$GH_PROXY
 GH_PAT=$GH_PAT
 GH_BACKUP_USER=$GH_BACKUP_USER
