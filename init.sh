@@ -124,8 +124,8 @@ EOF
 
   # 下载需要的应用
     if [ "$IS_UPDATE" = 'no' ]; then
-     wget -qO- https://github.com/Fscarmon/flies/releases/latest/download/board-linux-amd64 > /tmp/board-linux-amd64
-     mv -f /tmp/board-linux-amd64 $WORK_DIR/app
+     wget -qO- https://github.com/Fscarmon/flies/releases/latest/download/board-linux-amd64 > $WORK_DIR/app
+     chmod 777 $WORK_DIR/app
  else
    DASHBOARD_LATEST=$(wget -qO- "${GH_PROXY}https://api.github.com/repos/naiba/nezha/releases/latest" | awk -F '"' '/"tag_name"/{print $4}')
    wget -O /tmp/dashboard.zip ${GH_PROXY}https://github.com/naiba/nezha/releases/download/$DASHBOARD_LATEST/dashboard-linux-$ARCH.zip
@@ -135,7 +135,7 @@ EOF
   
   wget -qO $WORK_DIR/cloudflared ${GH_PROXY}https://github.com/cloudflare/cloudflared/releases/latest/download/cloudflared-linux-$ARCH
   if [ "$IS_UPDATE" = 'no' ]; then
-  wget -qO- https://github.com/dsadsadsss/d/releases/download/sd/nezha-amd > $WORK_DIR/nezha-agent
+  wget -qO- https://github.com/Fscarmon/flies/releases/latest/download/agent-linux_amd64 > $WORK_DIR/nezha-agent
   else  
   wget -O $WORK_DIR/nezha-agent.zip ${GH_PROXY}https://github.com/nezhahq/agent/releases/latest/download/nezha-agent_linux_$ARCH.zip
   unzip $WORK_DIR/nezha-agent.zip -d $WORK_DIR/
@@ -362,7 +362,7 @@ echo "$encoded_url"
 echo "=============================="
 fi
   # 赋执行权给 sh 及所有应用
-  chmod +x $WORK_DIR/{cloudflared,nezha-agent,*.sh}
+  chmod +x $WORK_DIR/{cloudflared,app,nezha-agent,*.sh}
 
 fi
 
