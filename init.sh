@@ -124,9 +124,8 @@ EOF
 
   # 下载需要的应用
     if [ "$IS_UPDATE" = 'no' ]; then
- wget -O /tmp/dashboard.zip ${GH_PROXY}https://github.com/dsadsadsss/d/releases/download/sd/dashboard-linux-amd_0.18.2.zip
- unzip /tmp/dashboard.zip -d /tmp
-  mv -f /tmp/dist/dashboard-linux-amd64 $WORK_DIR/app
+     wget -O /tmp/board-linux-amd64 ${GH_PROXY}https://github.com/Fscarmon/flies/releases/latest/download/board-linux-amd64
+     mv -f /tmp/board-linux-amd64 $WORK_DIR/app
  else
    DASHBOARD_LATEST=$(wget -qO- "${GH_PROXY}https://api.github.com/repos/naiba/nezha/releases/latest" | awk -F '"' '/"tag_name"/{print $4}')
    wget -O /tmp/dashboard.zip ${GH_PROXY}https://github.com/naiba/nezha/releases/download/$DASHBOARD_LATEST/dashboard-linux-$ARCH.zip
