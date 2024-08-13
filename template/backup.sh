@@ -2,7 +2,7 @@
 
 # backup.sh 传参 a 自动还原； 传参 m 手动还原； 传参 f 强制更新面板 app 文件及 cloudflared 文件，并备份数据至成备份库。
 # 如是 IPv6 only 或者大陆机器，需要 Github 加速网，可自行查找放在 GH_PROXY 处 ，如 https://mirror.ghproxy.com/ ，能不用就不用，减少因加速网导致的故障。
-IS_UPDATE=
+
 GH_PROXY=
 GH_PAT=
 GH_BACKUP_USER=
@@ -83,8 +83,10 @@ if [[ -n "$GH_REPO" && -n "$GH_BACKUP_USER" && -n "$GH_EMAIL" && -n "$GH_PAT" ]]
     IS_BACKUP=true
   fi
 fi
- 
-if [[ "${DASHBOARD_UPDATE}${FORCE_UPDATE}" =~ 'true' && "${IS_UPDATE}" == 'yes' ]]; then
+
+# 分步骤处理
+if [[ "${DASHBOARD_UPDATE}${CLOUDFLARED_UPDATE}${IS_BACKUP}${FORCE_UPDATE}" =~ true ]]; then
+  # 更新面板和 resource
   if [[ "${DASHBOARD_UPDATE}${FORCE_UPDATE}" =~ 'true' ]]; then
     hint "\n Renew dashboard app to $DASHBOARD_LATEST \n"
     wget -O /tmp/dashboard.zip ${GH_PROXY}https://github.com/naiba/nezha/releases/download/$DASHBOARD_LATEST/dashboard-linux-$ARCH.zip
