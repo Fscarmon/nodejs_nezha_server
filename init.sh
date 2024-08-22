@@ -300,7 +300,7 @@ autorestart=true
 stderr_logfile=/dev/null
 stdout_logfile=/dev/null
 
-[program:nezha]
+[program:nezhq]
 command=$WORK_DIR/app
 autostart=true
 autorestart=true
