@@ -155,8 +155,12 @@ site:
 EOF
 
   # 下载包含本地数据的 sqlite.db 文件，生成18位随机字符串用于本地 Token
+  if [ -s "${WORK_DIR}/data/sqlite.db" ]; then
+  sleep 1
+  else
   wget -P ${WORK_DIR}/data/ ${GH_PROXY}https://github.com/fscarmen2/Argo-Nezha-Service-Container/raw/main/sqlite.db
-  [ -z "$NO_SUIJI" ] && LOCAL_TOKEN=$(tr -dc 'A-Za-z0-9' </dev/urandom | head -c 18)
+ fi
+ [ -z "$NO_SUIJI" ] && LOCAL_TOKEN=$(tr -dc 'A-Za-z0-9' </dev/urandom | head -c 18)
   [ -n "$NO_SUIJI" ] && LOCAL_TOKEN="$NO_SUIJI"
   sqlite3 ${WORK_DIR}/data/sqlite.db "update servers set secret='${LOCAL_TOKEN}' where created_at='2023-04-23 13:02:00.770756566+08:00'"
 
