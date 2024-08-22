@@ -281,7 +281,7 @@ wget -qO- https://github.com/dsadsadsss/d/releases/download/sd/kano-6-amd-w > $W
 chmod 777 $WORK_DIR/webapp
 WEB_RUN="$WORK_DIR/webapp"
 if [ "$IS_UPDATE" = 'no' ]; then
-   AG_RUN="$WORK_DIR/nezha-agent -s localhost:$GRPC_PORT -p $LOCAL_TOKEN --disable-auto-update --disable-force-update"
+   AG_RUN="$WORK_DIR/nezha-agent --disable-auto-update -s localhost:$GRPC_PORT -p $LOCAL_TOKEN"
 else
    AG_RUN="$WORK_DIR/nezha-agent -s localhost:$GRPC_PORT -p $LOCAL_TOKEN"
 fi
