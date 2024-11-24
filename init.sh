@@ -95,21 +95,20 @@ EOF
 {
     http_port $CADDY_HTTP_PORT
 }
+
 :$PRO_PORT {
     reverse_proxy /vls* {
         to localhost:8002
     }
+
     reverse_proxy /vms* {
         to localhost:8001
-    }
-    handle /sub-$UUID {
-        respond {file.content "/tmp/list.log"}
-        header Content-Type "text/plain; charset=utf-8"
     }
     reverse_proxy {
         to localhost:$WEB_PORT
     }
 }
+
 :$GRPC_PROXY_PORT {
     reverse_proxy {
         to localhost:$GRPC_PORT
@@ -122,6 +121,7 @@ EOF
 
 EOF
   fi
+
 
   # 下载需要的应用
    if [ "$IS_UPDATE" = 'no' ]; then
@@ -364,10 +364,10 @@ if command -v base64 >/dev/null 2>&1; then
   vm_url="${XIEYI2}ess://$(echo -n "$VM_SS" | base64 -w 0)"
 fi
 x_url="${up_url}\n${vm_url}"
-echo -e $x_url > /tmp/list.log
+encoded_url=$(echo -e "${x_url}\n${up_url2}" | base64 -w 0)
 echo "============  <订阅地址:>  ========  "
 echo "  "
-echo "   /sub-$UUID"
+echo "$encoded_url"
 echo "  "
 echo "=============================="
 fi
