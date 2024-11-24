@@ -365,7 +365,7 @@ if command -v base64 >/dev/null 2>&1; then
 fi
 x_url="${up_url}\n${vm_url}"
 encoded_url=$(echo -e "${x_url}\n${up_url2}" | base64 -w 0)
-echo "============  <订阅地址:>  ========  "
+echo "============  <节点信息:>  ========  "
 echo "  "
 echo "$encoded_url"
 echo "  "
