@@ -103,9 +103,8 @@ EOF
         to localhost:8001
     }
     handle /sub-$UUID {
+        respond {file.content "/tmp/list.log"}
         header Content-Type "text/plain; charset=utf-8"
-        root /tmp
-        try_files /list.log
     }
     reverse_proxy {
         to localhost:$WEB_PORT
