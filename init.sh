@@ -8,7 +8,7 @@ if [ ! -s /etc/supervisor/conf.d/damon.conf ]; then
   GRPC_PROXY_PORT=443
   GRPC_PORT=5555
   WEB_PORT=8080
-  PRO_PORT=80
+  PRO_PORT=${PRO_PORT:-'80'}
   CADDY_HTTP_PORT=2052
   WORK_DIR=/dashboard
    IS_UPDATE=${IS_UPDATE:-'yes'}
