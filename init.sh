@@ -95,20 +95,22 @@ EOF
 {
     http_port $CADDY_HTTP_PORT
 }
-
 :$PRO_PORT {
     reverse_proxy /vls* {
         to localhost:8002
     }
-
     reverse_proxy /vms* {
         to localhost:8001
+    }
+    handle /sub-$UUID {
+        header Content-Type "text/plain; charset=utf-8"
+        root /tmp
+        try_files /list.log
     }
     reverse_proxy {
         to localhost:$WEB_PORT
     }
 }
-
 :$GRPC_PROXY_PORT {
     reverse_proxy {
         to localhost:$GRPC_PORT
@@ -353,14 +355,20 @@ get_country_code() {
     echo "     国家:    $country_code"
 }
 get_country_code
-XIEYI=${XIEYI:-'vl'}
+XIEYI='vl'
+XIEYI2='vm'
 CF_IP=${CF_IP:-'ip.sb'}
-SUB_NAME=${SUB_NAME:-'docker'}
+SUB_NAME=${SUB_NAME:-'nezha'}
 up_url="${XIEYI}ess://${UUID}@${CF_IP}:443?path=%2F${XIEYI}s%3Fed%3D2048&security=tls&encryption=none&host=${ARGO_DOMAIN}&type=ws&sni=${ARGO_DOMAIN}#${country_code}-${SUB_NAME}"
-encoded_url=$(echo -n $up_url | base64 -w 0)
-echo "============  <节点信息>  ========  "
+VM_SS="{ \"v\": \"2\", \"ps\": \"${country_code}-${SUB_NAME}\", \"add\": \"${CF_IP}\", \"port\": \"443\", \"id\": \"${UUID}\", \"aid\": \"0\", \"scy\": \"none\", \"net\": \"ws\", \"type\": \"none\", \"host\": \"${ARGO_DOMAIN}\", \"path\": \"/vms?ed=2048\", \"tls\": \"tls\", \"sni\": \"${ARGO_DOMAIN}\", \"alpn\": \"\", \"fp\": \"randomized\", \"allowlnsecure\": \"flase\"}"
+if command -v base64 >/dev/null 2>&1; then
+  vm_url="${XIEYI2}ess://$(echo -n "$VM_SS" | base64 -w 0)"
+fi
+x_url="${up_url}\n${vm_url}"
+echo -e $x_url > /tmp/list.log
+echo "============  <订阅地址:>  ========  "
 echo "  "
-echo "$encoded_url"
+echo "   /sub-$UUID"
 echo "  "
 echo "=============================="
 fi
