@@ -138,7 +138,8 @@ EOF
   
   wget -qO $WORK_DIR/cloudflared ${GH_PROXY}https://github.com/cloudflare/cloudflared/releases/latest/download/cloudflared-linux-$ARCH
   if [ "$IS_UPDATE" = 'no' ]; then
-  wget -O $WORK_DIR/nezha-agent.zip ${GH_PROXY}https://github.com/nezhahq/agent/releases/download/${DASH_VER}/nezha-agent_linux_$ARCH.zip
+  AGENT_VER=${AGENT_VER:-'v0.17.5'}
+  wget -O $WORK_DIR/nezha-agent.zip ${GH_PROXY}https://github.com/nezhahq/agent/releases/download/${AGENT_VER}/nezha-agent_linux_$ARCH.zip
   unzip $WORK_DIR/nezha-agent.zip -d $WORK_DIR/
   rm -rf $WORK_DIR/nezha-agent.zip /tmp/dist /tmp/dashboard.zip
   else  
