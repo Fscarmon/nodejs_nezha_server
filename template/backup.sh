@@ -104,8 +104,23 @@ if [[ "${DASHBOARD_UPDATE}${CLOUDFLARED_UPDATE}${IS_BACKUP}${FORCE_UPDATE}" =~ t
         mv -f /tmp/dist/dashboard-linux-$ARCH $WORK_DIR/app
         cmd_systemctl enable >/dev/null 2>&1
       fi
+      rm -rf /tmp/dist /tmp/dashboard.zip
     fi
-    rm -rf /tmp/dist /tmp/dashboard.zip
+   if [ -s /tmp/dashboard-linux-$ARCH ]; then
+      info "\n Restart Nezha Dashboard \n"
+      if [ "$IS_DOCKER" = 1 ]; then
+        supervisorctl stop nezha >/dev/null 2>&1
+        sleep 10
+        mv -f /tmp/dashboard-linux-$ARCH $WORK_DIR/app
+        supervisorctl start nezha >/dev/null 2>&1
+      else
+        cmd_systemctl disable >/dev/null 2>&1
+        sleep 10
+        mv -f /tmp/dashboard-linux-$ARCH $WORK_DIR/app
+        cmd_systemctl enable >/dev/null 2>&1
+      fi
+      rm -rf /tmp/dashboard.zip
+    fi   
   fi
 
   # 更新 cloudflared
