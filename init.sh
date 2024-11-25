@@ -11,7 +11,7 @@ if [ ! -s /etc/supervisor/conf.d/damon.conf ]; then
   PRO_PORT=${PRO_PORT:-'80'}
   CADDY_HTTP_PORT=2052
   WORK_DIR=/dashboard
-   IS_UPDATE=${IS_UPDATE:-'no'}
+   IS_UPDATE=${IS_UPDATE:-'yes'}
   # 如不分离备份的 github 账户，默认与哪吒登陆的 github 账户一致
   GH_BACKUP_USER=${GH_BACKUP_USER:-$GH_USER}
 
@@ -128,12 +128,20 @@ EOF
    DASH_VER=${DASH_VER:-'v0.17.9'}
    wget -O /tmp/dashboard.zip ${GH_PROXY}https://github.com/nezhahq/nezha/releases/download/${DASH_VER}/dashboard-linux-$ARCH.zip
    unzip /tmp/dashboard.zip -d /tmp
+   if [ -s "/tmp/dist/dashboard-linux-${ARCH}" ]; then
    mv -f /tmp/dist/dashboard-linux-$ARCH $WORK_DIR/app
    else
+   mv -f /tmp/dashboard-linux-$ARCH $WORK_DIR/app
+   fi
+else
    DASHBOARD_LATEST=$(wget -qO- "${GH_PROXY}https://api.github.com/repos/naiba/nezha/releases/latest" | awk -F '"' '/"tag_name"/{print $4}')
    wget -O /tmp/dashboard.zip ${GH_PROXY}https://github.com/naiba/nezha/releases/download/$DASHBOARD_LATEST/dashboard-linux-$ARCH.zip
    unzip /tmp/dashboard.zip -d /tmp
+   if [ -s "/tmp/dist/dashboard-linux-${ARCH}" ]; then
    mv -f /tmp/dist/dashboard-linux-$ARCH $WORK_DIR/app
+   else
+   mv -f /tmp/dashboard-linux-$ARCH $WORK_DIR/app
+   fi
    fi
   
   wget -qO $WORK_DIR/cloudflared ${GH_PROXY}https://github.com/cloudflare/cloudflared/releases/latest/download/cloudflared-linux-$ARCH
