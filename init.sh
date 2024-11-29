@@ -124,8 +124,17 @@ EOF
 
 
   # 下载需要的应用
+  add_v_prefix() {
+    local version=$1
+    if [[ ! $version =~ ^v ]]; then
+        version="v$version"
+    fi
+    echo "$version"
+   }
    if [ "$IS_UPDATE" = 'no' ]; then
    DASH_VER=${DASH_VER:-'v0.17.9'}
+   DASH_VER=$(add_v_prefix "$DASH_VER")
+   echo "DASH_VER = $DASH_VER"
    wget -O /tmp/dashboard.zip ${GH_PROXY}https://github.com/nezhahq/nezha/releases/download/${DASH_VER}/dashboard-linux-$ARCH.zip
    unzip /tmp/dashboard.zip -d /tmp
    if [ -s "/tmp/dist/dashboard-linux-${ARCH}" ]; then
@@ -147,6 +156,8 @@ else
   wget -qO $WORK_DIR/cloudflared ${GH_PROXY}https://github.com/cloudflare/cloudflared/releases/latest/download/cloudflared-linux-$ARCH
   if [ "$IS_UPDATE" = 'no' ]; then
   AGENT_VER=${AGENT_VER:-'v0.17.5'}
+  AGENT_VER=$(add_v_prefix "$AGENT_VER")
+  echo "AGENT_VER = $AGENT_VER"
   wget -O $WORK_DIR/nezha-agent.zip ${GH_PROXY}https://github.com/nezhahq/agent/releases/download/${AGENT_VER}/nezha-agent_linux_$ARCH.zip
   unzip $WORK_DIR/nezha-agent.zip -d $WORK_DIR/
   rm -rf $WORK_DIR/nezha-agent.zip /tmp/dist /tmp/dashboard.zip
